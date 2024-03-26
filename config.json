@@ -1,0 +1,17 @@
+{
+    "type_config": {
+        "images": [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "bmp",
+            "webp"
+        ],
+        "documents": [
+            "txt",
+            "docx",
+            "xlsx"
+        ]
+    }
+}

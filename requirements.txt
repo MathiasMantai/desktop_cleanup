@@ -1,0 +1,2 @@
+tk>=0.1.0
+pyinstaller>=6.5.0
