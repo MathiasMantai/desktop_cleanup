@@ -27,10 +27,11 @@ class MainFrame(Frame):
         l = Label(master=self, text='t')
         l.grid(row=0, column=0)
 
-        text = Text()
+        text = Text(master=self, width=15, height= 10)
+        text.grid(row=0, column=0)
 
         config = Button(master=self, text='Config', command=lambda: controller.toggle_frame('config'))
-        config.grid(row=0, column=1)
+        config.grid(row=2, column=0)
 
     def show_frame(self):
         self.tkraise()
