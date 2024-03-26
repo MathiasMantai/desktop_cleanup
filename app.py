@@ -8,12 +8,18 @@ from tkinter import (
     Button,
     Text
 )
+from customtkinter import (
+    CTkButton,
+    CTk,
+    CTkTextbox,
+    CTkFrame
+)
 from file import (
     load_config
 )
 
 
-class MainFrame(Frame):
+class MainFrame(CTkFrame):
     """
     main frame for application
     shows a textarea for paths that should be organized
@@ -27,16 +33,16 @@ class MainFrame(Frame):
         l = Label(master=self, text='t')
         l.grid(row=0, column=0)
 
-        text = Text(master=self, width=15, height= 10)
+        text = CTkTextbox(master=self, width=100, height= 100, border_spacing = 0)
         text.grid(row=0, column=0)
 
-        config = Button(master=self, text='Config', command=lambda: controller.toggle_frame('config'))
+        config = CTkButton(master=self, text='Config', command=lambda: controller.toggle_frame('config'))
         config.grid(row=2, column=0)
 
     def show_frame(self):
         self.tkraise()
 
-class Config(Frame):
+class Config(CTkFrame):
     """
     config frame for application
     show options:
@@ -78,12 +84,12 @@ class Config(Frame):
 
 class App:
 
-    window: Tk
+    window: CTk
     config: dict
     frames = {}
 
     def __init__(self, title='App', width = 800, height = 600):
-        self.window = Tk()
+        self.window = CTk()
         self.window.geometry(f'{width}x{height}')
         self.window.title(title)
         self.config = load_config('config.json')
