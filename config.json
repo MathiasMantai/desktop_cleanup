@@ -1,14 +1,15 @@
 {
-    "typeconfig": {
+    "type_config": {
         "images": {
-            "new_dir": "",
+            "new_dir": "C:\\Users\\mathias\\Pictures",
             "file_extensions": {
                 "jpg": 0,
                 "jpeg": 0,
-                "png": 0,
-                "gif": 1,
+                "png": 1,
+                "gif": 0,
                 "bmp": 0,
-                "webp": 0
+                "webp": 0,
+                "svg": 1
             }
         },
         "documents": {
@@ -28,6 +29,7 @@
         }
     },
     "target_list": [
+        "C:\\Users\\mathias\\Desktop\\test",
         "C:\\Users\\mathias\\Desktop"
     ]
 }

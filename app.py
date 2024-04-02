@@ -29,18 +29,25 @@ class MainFrame(CTkFrame):
     and a button to start organizing
     """
     id: str = 'main'
+    target_list: CTkTextbox = None
     controller: Controller
     def __init__(self, master=None, controller=None):
         super(MainFrame, self).__init__(master=master)
         self.controller = controller
 
+    def on_text_changed(self, event):
+        target_list_string = self.target_list.get("1.0",'end-1c')
+        self.controller.update_target_list(target_list_string)
+
     def build_ui(self):
         l = CTkLabel(master=self, text='t')
         l.grid(row=0, column=0)
 
-        text = CTkTextbox(master=self, width=500, height= 400, border_spacing = 0)
-        text.grid(row=0, column=0)
-        text.insert('1.0', text=self.controller.target_list_to_string(self.controller.get_config('target_list')))
+        self.target_list = CTkTextbox(master=self, width=500, height= 400, border_spacing = 0)
+        self.target_list.grid(row=0, column=0)
+        self.target_list.insert('1.0', text=self.controller.target_list_to_string(self.controller.get_config('target_list')))
+        self.target_list.bind("<KeyRelease>", self.on_text_changed)
+        print(self.target_list.get("1.0",'end-1c'))
 
     def show_frame(self):
         self.tkraise()
@@ -72,15 +79,15 @@ class Config(CTkFrame):
     def build_ui(self, padx = 0, pady = 0):
         row = 0
 
-        options = self.controller.get_config("typeconfig")
+        options = self.controller.get_config("type_config")
         for option in options:
             col = 0
             label = CTkLabel(master=self, text=option.capitalize(), padx=padx, pady=pady)
             label.grid(row=row, column=col, padx=padx, pady=pady)
             row += 1
-            for item in options[option]:
-                id = "typeconfig_" + option + "_" + item
-                self.vars[id] = IntVar(value=options[option][item], name=id)
+            for item in options[option]["file_extensions"]:
+                id = "type_config." + option + ".file_extensions." + item
+                self.vars[id] = IntVar(value=options[option]["file_extensions"][item], name=id)
                 self.chks[id] = CTkCheckBox(self, text = item, variable=self.vars[id], width=80, checkbox_width=20, checkbox_height=20, command=lambda id=id: self.controller.update_config(id, self.vars[id].get()))
                 self.chks[id].grid(row=row, column=col, padx=0, pady=0)
                 col += 1
@@ -123,7 +130,7 @@ class App:
         execute.pack()
 
     def execute(self):
-        pass
+        self.controller.execute_file_movements()
 
     def toggle_frame(self, id):
         print("Togggle for frame: " + id)
