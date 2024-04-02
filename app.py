@@ -42,9 +42,6 @@ class MainFrame(CTkFrame):
         text.grid(row=0, column=0)
         text.insert('1.0', text=self.controller.target_list_to_string(self.controller.get_config('target_list')))
 
-        config = CTkButton(master=self, text='Execute')
-        config.grid(row=2, column=0, padx=5, pady=5)
-
     def show_frame(self):
         self.tkraise()
 
@@ -84,17 +81,12 @@ class Config(CTkFrame):
             for item in options[option]:
                 id = "typeconfig_" + option + "_" + item
                 self.vars[id] = IntVar(value=options[option][item], name=id)
-                self.chks[id] = CTkCheckBox(self, text = item, variable=self.vars[id], width=80, checkbox_width=20, checkbox_height=20, command=lambda: self.controller.update_config(id, self.vars[id].get()))
+                self.chks[id] = CTkCheckBox(self, text = item, variable=self.vars[id], width=80, checkbox_width=20, checkbox_height=20, command=lambda id=id: self.controller.update_config(id, self.vars[id].get()))
                 self.chks[id].grid(row=row, column=col, padx=0, pady=0)
                 col += 1
             row += 1
         
-        for var in self.vars:
-            print(self.vars[var]._name)
-        
-        save = CTkButton(master=self, text='Save Changes', command=self.controller.save_config)
-        save.grid(row=row, column=0, padx=5, pady=5)
-        
+
 class App:
 
     window: CTk
@@ -123,9 +115,12 @@ class App:
         main.build_ui()
         config.build_ui(5, 5)
 
+        #execute frame
+        e_frame = CTkFrame(master=self.window)
+        e_frame.grid(row=2, column=0, columnspan = 2, padx=5, pady=10, sticky="nsew")
         #execute button
-        execute = CTkButton(master=self.window, text='Execute', command=self.execute)
-        execute.grid(row=2, column=0, columnspan = 2, padx=5, pady=5)
+        execute = CTkButton(master=e_frame, text='Execute', command=self.execute)
+        execute.pack()
 
     def execute(self):
         pass
