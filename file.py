@@ -1,4 +1,4 @@
-from json import load
+from json import load, dump
 from os import (
     listdir,
     path
@@ -17,3 +17,8 @@ def load_config(file_path):
     file_path = path.relpath(file_path)
     with open(file_path, 'r') as f:
         return load(f)
+    
+def save_config(file_path, config):
+    file_path = path.relpath(file_path)
+    with open(file_path, 'w') as f:
+        dump(config, f)

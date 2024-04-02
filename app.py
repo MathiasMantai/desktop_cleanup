@@ -9,14 +9,17 @@ from tkinter import (
     Text
 )
 from customtkinter import (
+    CTkCheckBox,
     CTkButton,
     CTk,
     CTkTextbox,
-    CTkFrame
+    CTkFrame,
+    CTkLabel
 )
 from file import (
     load_config
 )
+from controller import Controller
 
 
 class MainFrame(CTkFrame):
@@ -26,18 +29,21 @@ class MainFrame(CTkFrame):
     and a button to start organizing
     """
     id: str = 'main'
-    def __init__(self, master=None):
+    controller: Controller
+    def __init__(self, master=None, controller=None):
         super(MainFrame, self).__init__(master=master)
+        self.controller = controller
 
-    def build_ui(self, controller):
-        l = Label(master=self, text='t')
+    def build_ui(self):
+        l = CTkLabel(master=self, text='t')
         l.grid(row=0, column=0)
 
-        text = CTkTextbox(master=self, width=100, height= 100, border_spacing = 0)
+        text = CTkTextbox(master=self, width=500, height= 400, border_spacing = 0)
         text.grid(row=0, column=0)
+        text.insert('1.0', text=self.controller.target_list_to_string(self.controller.get_config('target_list')))
 
-        config = CTkButton(master=self, text='Config', command=lambda: controller.toggle_frame('config'))
-        config.grid(row=2, column=0)
+        config = CTkButton(master=self, text='Execute')
+        config.grid(row=2, column=0, padx=5, pady=5)
 
     def show_frame(self):
         self.tkraise()
@@ -52,61 +58,77 @@ class Config(CTkFrame):
         - music: mp3, mp4 
     """
 
-    vars: list = []
+    # vars: list = []
+    controller: Controller
     id: str = 'config'
+    vars: dict = {}
+    chks: dict = {}
 
-    def __init__(self, master=None):
+    def __init__(self, master=None, controller=None):
         super(Config, self).__init__(master=master)
+        self.controller = controller
 
 
     def show_frame(self):
         self.tkraise()
 
-
-    def build_ui(self, options: dict, controller, padx = 0, pady = 0):
+    def build_ui(self, padx = 0, pady = 0):
         row = 0
+
+        options = self.controller.get_config("typeconfig")
         for option in options:
             col = 0
-            label = Label(master=self, text=option.capitalize(), padx=padx, pady=pady)
-            label.grid(row=row, column=col)
-            col += 1
+            label = CTkLabel(master=self, text=option.capitalize(), padx=padx, pady=pady)
+            label.grid(row=row, column=col, padx=padx, pady=pady)
+            row += 1
             for item in options[option]:
-                var = IntVar()
-                chk = Checkbutton(self, text = item, variable=var)
-                self.vars.append(var)
-                chk.grid(row=row, column=col)
+                id = "typeconfig_" + option + "_" + item
+                self.vars[id] = IntVar(value=options[option][item], name=id)
+                self.chks[id] = CTkCheckBox(self, text = item, variable=self.vars[id], width=80, checkbox_width=20, checkbox_height=20, command=lambda: self.controller.update_config(id, self.vars[id].get()))
+                self.chks[id].grid(row=row, column=col, padx=0, pady=0)
                 col += 1
             row += 1
         
-        back = Button(master=self, text='Zurück', command=lambda: controller.toggle_frame('main'))
-        back.grid(row=row + 1, column = 0, sticky="nsew")
+        for var in self.vars:
+            print(self.vars[var]._name)
         
-
+        save = CTkButton(master=self, text='Save Changes', command=self.controller.save_config)
+        save.grid(row=row, column=0, padx=5, pady=5)
+        
 class App:
 
     window: CTk
-    config: dict
     frames = {}
+    controller: Controller
 
     def __init__(self, title='App', width = 800, height = 600):
         self.window = CTk()
+        # self.window.after(201, )
         self.window.geometry(f'{width}x{height}')
         self.window.title(title)
-        self.config = load_config('config.json')
+        self.controller = Controller('config.json')
+        self.controller.load_config()
+        print(self.controller.config)
 
 
     def build_ui(self):
-        config = Config(self.window)
-        self.frames[config.id] = config
-        config.grid(row=0, column=0, sticky="nsew")
-
-        main = MainFrame(self.window)
+        main = MainFrame(master = self.window, controller = self.controller)
         self.frames[main.id] = main
         main.grid(row=0, column=0, sticky="nsew")
 
-        main.build_ui(self)
-        config.build_ui(self.config["type_config"], self, 5, 5)
+        config = Config(master = self.window, controller = self.controller)
+        self.frames[config.id] = config
+        config.grid(row=0, column=1, sticky="nsew")
 
+        main.build_ui()
+        config.build_ui(5, 5)
+
+        #execute button
+        execute = CTkButton(master=self.window, text='Execute', command=self.execute)
+        execute.grid(row=2, column=0, columnspan = 2, padx=5, pady=5)
+
+    def execute(self):
+        pass
 
     def toggle_frame(self, id):
         print("Togggle for frame: " + id)
