@@ -6,7 +6,8 @@ from tkinter import (
     Checkbutton,
     IntVar,
     Button,
-    Text
+    Text,
+    PhotoImage
 )
 from customtkinter import (
     CTkCheckBox,
@@ -14,13 +15,15 @@ from customtkinter import (
     CTk,
     CTkTextbox,
     CTkFrame,
-    CTkLabel
+    CTkLabel,
+    CTkImage,
+    set_default_color_theme
 )
 from file import (
     load_config
 )
 from controller import Controller
-
+from PIL import Image
 
 class MainFrame(CTkFrame):
     """
@@ -110,6 +113,8 @@ class App:
         self.controller = Controller('config.json')
         self.controller.load_config()
         print(self.controller.config)
+        set_default_color_theme('green')
+        self.window.resizable(False,False)
 
 
     def build_ui(self):
