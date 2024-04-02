@@ -1,21 +1,30 @@
 {
     "typeconfig": {
         "images": {
-            "jpg": 0,
-            "jpeg": 0,
-            "png": 0,
-            "gif": 1,
-            "bmp": 0,
-            "webp": 0
+            "new_dir": "",
+            "file_extensions": {
+                "jpg": 0,
+                "jpeg": 0,
+                "png": 0,
+                "gif": 1,
+                "bmp": 0,
+                "webp": 0
+            }
         },
         "documents": {
-            "txt": 0,
-            "docx": 0,
-            "xlsx": 0
+            "new_dir": "",
+            "file_extensions": {
+                "txt": 0,
+                "docx": 0,
+                "xlsx": 0
+            }
         },
         "music": {
-            "mp3": 0,
-            "mp4": 0
+            "new_dir": "",
+            "file_extensions": {
+                "mp3": 0,
+                "mp4": 0
+            }
         }
     },
     "target_list": [
