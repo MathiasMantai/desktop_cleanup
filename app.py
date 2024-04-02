@@ -86,6 +86,9 @@ class Config(CTkFrame):
             label.grid(row=row, column=col, padx=padx, pady=pady)
             row += 1
             for item in options[option]["file_extensions"]:
+                if col >= 6:
+                    row += 1
+                    col = 0
                 id = "type_config." + option + ".file_extensions." + item
                 self.vars[id] = IntVar(value=options[option]["file_extensions"][item], name=id)
                 self.chks[id] = CTkCheckBox(self, text = item, variable=self.vars[id], width=80, checkbox_width=20, checkbox_height=20, command=lambda id=id: self.controller.update_config(id, self.vars[id].get()))
@@ -103,7 +106,6 @@ class App:
     def __init__(self, title='App', width = 800, height = 600):
         self.window = CTk()
         # self.window.after(201, )
-        self.window.geometry(f'{width}x{height}')
         self.window.title(title)
         self.controller = Controller('config.json')
         self.controller.load_config()
@@ -128,6 +130,14 @@ class App:
         #execute button
         execute = CTkButton(master=e_frame, text='Execute', command=self.execute)
         execute.pack()
+        main.update()
+        config.update()
+        width = main.winfo_reqwidth() + config.winfo_reqwidth()
+        height = (main.winfo_reqheight() + e_frame.winfo_reqheight() if config.winfo_reqheight() < main.winfo_reqheight() else config.winfo_reqheight() + e_frame.winfo.reqheight())
+        #padding
+        height += 20
+        print(f"{width}x{height}")
+        self.window.geometry(f'{width}x{height}')
 
     def execute(self):
         self.controller.execute_file_movements()

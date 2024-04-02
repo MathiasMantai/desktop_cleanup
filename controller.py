@@ -63,16 +63,16 @@ class Controller:
         self.save_config(self.config_file_path)
 
     def execute_file_movement(self, file_path: str, file_name: str, allowed_file_extensions: list, new_dir):
-        print("file to move: " + file_name)
         file_parts = file_name.split(".")
         if file_parts[-1] in allowed_file_extensions:
+            print("file to move: " + file_name)
             self.move_file(file_path, file_name, new_dir)
 
     def execute_file_movements(self):
         options: dict = self.get_config("type_config")
         for path in self.get_config("target_list"):
             for option in options:
-                if 1 in options[option]["filee_extensions"].values():
+                if 1 in options[option]["file_extensions"].values():
                     new_dir = options[option]["new_dir"]
                     file_extensions = list(options[option]["file_extensions"].keys())
                     print(new_dir)

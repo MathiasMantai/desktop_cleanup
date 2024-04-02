@@ -5,6 +5,6 @@ from file import list_files, move_file
 if __name__ == '__main__':
     # move_file('C:/Users/mathias/Desktop', 't.txt', 'C:/Users/mathias')
     # print(list_files('C:/Users/mathias/Desktop'))
-    app = App('Desktop Organizer', 1000, 600)
+    app = App('Desktop Organizer', 990, 450)
     app.build_ui()
     app.run()

@@ -3,8 +3,8 @@
         "images": {
             "new_dir": "C:\\Users\\mathias\\Pictures",
             "file_extensions": {
-                "jpg": 0,
-                "jpeg": 0,
+                "jpg": 1,
+                "jpeg": 1,
                 "png": 1,
                 "gif": 0,
                 "bmp": 0,
@@ -13,11 +13,14 @@
             }
         },
         "documents": {
-            "new_dir": "",
+            "new_dir": "C:\\Users\\mathias\\Documents",
             "file_extensions": {
-                "txt": 0,
-                "docx": 0,
-                "xlsx": 0
+                "txt": 1,
+                "docx": 1,
+                "xlsx": 1,
+                "ods": 1,
+                "csv": 1,
+                "pdf": 1
             }
         },
         "music": {
@@ -30,6 +33,7 @@
     },
     "target_list": [
         "C:\\Users\\mathias\\Desktop\\test",
-        "C:\\Users\\mathias\\Desktop"
+        "C:\\Users\\mathias\\Desktop",
+        "C:\\Users\\mathias\\Downloads"
     ]
 }
