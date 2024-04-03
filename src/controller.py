@@ -1,4 +1,4 @@
-from json import load, dump
+from json import load, dump, dumps
 from os import (
     listdir,
     path
@@ -28,6 +28,10 @@ class Controller:
         self.log_manager = LogManager(self.file_manager, log_file_path, error_log_name)
         self.log_manager.init()
 
+        #check for config json
+        config_file_exists = self.file_manager.file_exists(config_file_path)
+        if not config_file_exists:
+            self.file_manager.create_file(config_file_path, dumps(obj=self.default_config_data(), indent=4))
 
     def list_files(self, dir_path: str):
         return [file for file in listdir(dir_path) if path.isfile(path.join(path.abspath(dir_path), file))]
