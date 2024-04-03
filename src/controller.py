@@ -45,7 +45,7 @@ class Controller:
             file_path = path.join(dir_path, file_name)
             new_file_path = path.join(new_dir, file_name)
             move(file_path, new_file_path)
-        except Exception as e:
+        except PermissionError as e:
             print(str(e))
             self.log_manager.log_error(str(e))
 
