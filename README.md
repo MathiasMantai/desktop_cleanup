@@ -8,5 +8,5 @@ pip install -r requirements.txt
 
 ## Build app with pyinstaller
 '''
-
+pyinstaller main.spec
 '''
