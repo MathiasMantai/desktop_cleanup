@@ -31,5 +31,6 @@ class LogManager:
     def log_error(self, message):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         error_log_file_path = join(self.log_dir, self.error_log_name)
-        with open(error_log_file_path, 'a') as f:
-            f.write(f'[{timestamp}]: {message}\n')
+        permission = 'a'
+        content = f'[{timestamp}]: {message}\n'
+        self.file_manager.write_file(error_log_file_path, permission, content)

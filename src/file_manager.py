@@ -15,3 +15,7 @@ class FileManager:
     
     def file_exists(self, path):
         return isfile(path)
+    
+    def write_file(self, path, permission, file_content):
+        with open(path, permission) as f:
+            f.write(file_content)
