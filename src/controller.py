@@ -17,11 +17,17 @@ class Controller:
     log_manager: LogManager
     file_manager: FileManager
 
-    def __init__(self, config_file_path: str, config_file_name: str, log_file_path: str):
+    def __init__(self, data_dir, config_file_path: str, config_file_name: str, log_file_path: str):
         self.config_file_path = path.join(config_file_path, config_file_name)
 
         #file manager
         self.file_manager = FileManager()
+
+        #check data dir
+        data_dir_exists = self.file_manager.dir_exists(data_dir)
+        print(data_dir_exists)
+        if not data_dir_exists:
+            self.file_manager.create_dir(data_dir)
 
         #log manager
         error_log_name = 'error.log'
@@ -29,6 +35,7 @@ class Controller:
         self.log_manager.init()
 
         #check for data dir
+        print("config dir: " + config_file_path)
         if not self.file_manager.dir_exists(config_file_path):
             self.file_manager.create_dir(config_file_path)
             

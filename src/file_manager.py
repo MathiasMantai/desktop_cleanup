@@ -3,7 +3,10 @@ from os import mkdir
 
 class FileManager:
     def create_dir(self, path):
-        mkdir(path)
+        try:
+            mkdir(path)
+        except Exception as e:
+            print(str(e))
 
     def create_file(self, path, file_content: str | None = None):
         with open(path, 'w') as f: 
