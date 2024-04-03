@@ -24,7 +24,7 @@ class ConfigFrame(CTkFrame):
     chks: dict = {}
 
     def __init__(self, master=None, controller=None):
-        super(ConfigFrame, self).__init__(master=master)
+        super(ConfigFrame, self).__init__(master=master, corner_radius=0)
         self.controller = controller
 
 
@@ -37,7 +37,7 @@ class ConfigFrame(CTkFrame):
         options = self.controller.get_config("type_config")
         for option in options:
             col = 0
-            label = CTkLabel(master=self, text=option.capitalize(), padx=padx, pady=pady)
+            label = CTkLabel(master=self, text=option.capitalize(), padx=padx, pady=pady, corner_radius=0)
             label.grid(row=row, column=col, padx=padx, pady=pady)
             row += 1
             for item in options[option]["file_extensions"]:

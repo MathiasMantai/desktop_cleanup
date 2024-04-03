@@ -16,7 +16,7 @@ class TargetList(CTkFrame):
     target_list: CTkTextbox = None
     controller: Controller
     def __init__(self, master=None, controller=None):
-        super(TargetList, self).__init__(master=master)
+        super(TargetList, self).__init__(master=master, corner_radius=0)
         self.controller = controller
 
     def on_text_changed(self, event):
@@ -27,7 +27,7 @@ class TargetList(CTkFrame):
         l = CTkLabel(master=self, text='t')
         l.grid(row=0, column=0)
 
-        self.target_list = CTkTextbox(master=self, width=300, height= 400, border_spacing = 0)
+        self.target_list = CTkTextbox(master=self, width=300, height= 400, border_spacing = 0, corner_radius = 0)
         self.target_list.grid(row=0, column=0)
         self.target_list.insert('1.0', text=self.controller.target_list_to_string(self.controller.get_config('target_list')))
         self.target_list.bind("<KeyRelease>", self.on_text_changed)

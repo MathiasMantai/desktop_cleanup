@@ -44,7 +44,7 @@ class App:
         config.build_ui(5, 5)
 
         #execute frame
-        e_frame = CTkFrame(master=self.window)
+        e_frame = CTkFrame(master=self.window, corner_radius=0)
         e_frame.grid(row=2, column=0, columnspan = 2, padx=5, pady=10, sticky="nsew")
         #execute button
         execute = CTkButton(master=e_frame, text='Execute', command=self.execute)
