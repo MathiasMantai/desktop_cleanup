@@ -15,12 +15,12 @@ class App:
     frames = {}
     controller: Controller
 
-    def __init__(self, title, config_file_path: str, log_file_path: str, icon='icon.png', width = 800, height = 600):
+    def __init__(self, title, config_file_path: str, config_file_name: str, log_file_path: str, icon='icon.png', width = 800, height = 600):
         self.window = CTk()
         self.window.title(title)
 
         # config_path = 'data/config.json'
-        self.controller = Controller(config_file_path, log_file_path)
+        self.controller = Controller(config_file_path, config_file_name, log_file_path)
         self.controller.load_config()
         print(self.controller.config)
         set_default_color_theme('green')

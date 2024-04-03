@@ -17,8 +17,8 @@ class Controller:
     log_manager: LogManager
     file_manager: FileManager
 
-    def __init__(self, config_file_path: str, log_file_path: str):
-        self.config_file_path = config_file_path
+    def __init__(self, config_file_path: str, config_file_name: str, log_file_path: str):
+        self.config_file_path = path.join(config_file_path, config_file_name)
 
         #file manager
         self.file_manager = FileManager()
@@ -28,10 +28,14 @@ class Controller:
         self.log_manager = LogManager(self.file_manager, log_file_path, error_log_name)
         self.log_manager.init()
 
-        #check for config json
-        config_file_exists = self.file_manager.file_exists(config_file_path)
+        #check for data dir
+        if not self.file_manager.dir_exists(config_file_path):
+            self.file_manager.create_dir(config_file_path)
+            
+        #check for config json in data dir
+        config_file_exists = self.file_manager.file_exists(self.config_file_path)
         if not config_file_exists:
-            self.file_manager.create_file(config_file_path, dumps(obj=self.default_config_data(), indent=4))
+            self.file_manager.create_file(self.config_file_path, dumps(obj=self.default_config_data(), indent=4))
 
     def list_files(self, dir_path: str):
         return [file for file in listdir(dir_path) if path.isfile(path.join(path.abspath(dir_path), file))]
@@ -80,22 +84,18 @@ class Controller:
         self.set_value_by_key_chain("target_list", new_target_list)
         self.save_config(self.config_file_path)
 
-    def execute_file_movement(self, file_path: str, file_name: str, allowed_file_extensions: list, new_dir):
-        file_parts = file_name.split(".")
-        if file_parts[-1] in allowed_file_extensions:
-            print("file to move: " + file_name)
-            self.move_file(file_path, file_name, new_dir)
-
     def execute_file_movements(self):
-        options: dict = self.get_config("type_config")
+        type_config: dict = self.get_config("type_config")
         for path in self.get_config("target_list"):
-            for option in options:
-                if 1 in options[option]["file_extensions"].values():
-                    new_dir = options[option]["new_dir"]
-                    file_extensions = list(options[option]["file_extensions"].keys())
+            for option in type_config:
+                if 1 in type_config[option]["file_extensions"].values():
+                    new_dir = type_config[option]["new_dir"]
+                    file_extensions = list(type_config[option]["file_extensions"].keys())
                     files = self.list_files(path)
                     for file in files:
-                        self.execute_file_movement(path, file, file_extensions, new_dir)
+                        file_parts = file.split(".")
+                        if file_parts[-1] in file_extensions:
+                            self.move_file(path, file, new_dir)
 
 
 
