@@ -5,6 +5,7 @@ from os import (
 )
 from shutil import move
 from src.log_manager import LogManager
+from src.file_manager import FileManager
 
 class Controller:
     """
@@ -13,15 +14,20 @@ class Controller:
 
     config_file_path: str
     config: dict = {}
-    log: LogManager
+    log_manager: LogManager
+    file_manager: FileManager
 
     def __init__(self, config_file_path: str, log_file_path: str):
         self.config_file_path = config_file_path
 
+        #file manager
+        self.file_manager = FileManager()
+
         #log manager
         error_log_name = 'error.log'
-        self.log = LogManager(log_file_path, error_log_name)
-        self.log.init()
+        self.log_manager = LogManager(self.file_manager, log_file_path, error_log_name)
+        self.log_manager.init()
+
 
     def list_files(self, dir_path: str):
         return [file for file in listdir(dir_path) if path.isfile(path.join(path.abspath(dir_path), file))]
@@ -33,7 +39,7 @@ class Controller:
             move(file_path, new_file_path)
         except Exception as e:
             print(str(e))
-            self.log.log_error(str(e))
+            self.log_manager.log_error(str(e))
 
     def load_config(self):
         file_path = path.relpath(self.config_file_path)
@@ -86,3 +92,45 @@ class Controller:
                     files = self.list_files(path)
                     for file in files:
                         self.execute_file_movement(path, file, file_extensions, new_dir)
+
+
+
+    def default_config_data(self):
+        """
+        defines a default dict that will be used if no config file was found
+        """
+        return {
+            "type_config": {
+                "images": {
+                    "new_dir": "",
+                    "file_extensions": {
+                        "jpg": 1,
+                        "jpeg": 1,
+                        "png": 1,
+                        "gif": 0,
+                        "bmp": 0,
+                        "webp": 0,
+                        "svg": 1
+                    }
+                },
+                "documents": {
+                    "new_dir": "",
+                    "file_extensions": {
+                        "txt": 1,
+                        "docx": 1,
+                        "xlsx": 1,
+                        "ods": 1,
+                        "csv": 1,
+                        "pdf": 1
+                    }
+                },
+                "music": {
+                    "new_dir": "",
+                    "file_extensions": {
+                        "mp3": 0,
+                        "mp4": 0
+                    }
+                }
+            },
+            "target_list": []
+        }
