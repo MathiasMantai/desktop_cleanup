@@ -4,6 +4,7 @@ from os import (
     path
 )
 from shutil import move
+from src.log_manager import LogManager
 
 class Controller:
     """
@@ -12,9 +13,15 @@ class Controller:
 
     config_file_path: str
     config: dict = {}
+    log: LogManager
 
-    def __init__(self, config_file_path: str):
+    def __init__(self, config_file_path: str, log_file_path: str):
         self.config_file_path = config_file_path
+
+        #log manager
+        error_log_name = 'error.log'
+        self.log = LogManager(log_file_path, error_log_name)
+        self.log.init()
 
     def list_files(self, dir_path: str):
         return [file for file in listdir(dir_path) if path.isfile(path.join(path.abspath(dir_path), file))]
@@ -26,6 +33,7 @@ class Controller:
             move(file_path, new_file_path)
         except Exception as e:
             print(str(e))
+            self.log.log_error(str(e))
 
     def load_config(self):
         file_path = path.relpath(self.config_file_path)
@@ -75,9 +83,6 @@ class Controller:
                 if 1 in options[option]["file_extensions"].values():
                     new_dir = options[option]["new_dir"]
                     file_extensions = list(options[option]["file_extensions"].keys())
-                    print(new_dir)
-                    print(file_extensions)
                     files = self.list_files(path)
-                    print(files)
                     for file in files:
                         self.execute_file_movement(path, file, file_extensions, new_dir)
