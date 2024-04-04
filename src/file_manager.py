@@ -1,5 +1,6 @@
-from os.path import isdir, isfile
-from os import mkdir
+from os.path import isdir, isfile, join
+from os import mkdir, listdir
+from shutil import move
 
 class FileManager:
     def create_dir(self, path):
@@ -22,3 +23,17 @@ class FileManager:
     def write_file(self, path, permission, file_content):
         with open(path, permission) as f:
             f.write(file_content)
+
+    def move_file(self, dir_path: str, file_name: str, new_dir: str):
+        try:
+            file_path = join(dir_path, file_name)
+            new_file_path = join(new_dir, file_name)
+            move(file_path, new_file_path)
+        except PermissionError as e:
+            return str(e)
+
+    def list_dir(self, path: str):
+        """
+        list all files in a specified dir
+        """
+        return listdir(path)

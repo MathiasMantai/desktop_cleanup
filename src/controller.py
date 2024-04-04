@@ -102,7 +102,9 @@ class Controller:
                     for file in files:
                         file_parts = file.split(".")
                         if file_parts[-1] in file_extensions:
-                            self.move_file(path, file, new_dir)
+                            rs = self.file_manager.move_file(path, file, new_dir)
+                            if rs is not None:
+                                self.log_manager.log_error(rs)
 
 
 
