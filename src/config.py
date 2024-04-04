@@ -1,8 +1,9 @@
-from tkinter import IntVar
+from tkinter import IntVar, LEFT, RIGHT
 from customtkinter import (
     CTkFrame,
     CTkLabel,
-    CTkCheckBox
+    CTkCheckBox,
+    CTkEntry
 )
 from src.controller import Controller
 
@@ -12,7 +13,7 @@ class ConfigFrame(CTkFrame):
     config frame for application
     show options:
     - which file types to organize 
-        - images: jpg, png, gif, bitmap, svg
+        - images: jpg, png, gif, bitmap, svg, webp
         - documents: txt, docx, xlsx
         - music: mp3, mp4 
     """
@@ -27,18 +28,28 @@ class ConfigFrame(CTkFrame):
         super(ConfigFrame, self).__init__(master=master, corner_radius=0)
         self.controller = controller
 
-
     def show_frame(self):
         self.tkraise()
 
     def build_ui(self, padx = 0, pady = 0):
         row = 0
-
         options = self.controller.get_config("type_config")
         for option in options:
             col = 0
-            label = CTkLabel(master=self, text=option.capitalize(), padx=padx, pady=pady, corner_radius=0)
-            label.grid(row=row, column=col, padx=padx, pady=pady)
+            header_frame = CTkFrame(master=self, bg_color="transparent")
+            header_frame.grid(row=row, columnspan=6, sticky='we')
+            label = CTkLabel(master=header_frame, text=option.capitalize(), padx=padx, pady=pady, corner_radius=0, anchor="n", font=('Helvetica', 18, 'bold'))
+            # label.grid(row=row, column=col, padx=padx, pady=pady)
+            label.pack(side=LEFT, padx=10)
+            new_dir_label = CTkLabel(master=header_frame, text="New Directory:")
+            # new_dir_label.grid(row=row, column=1, padx=0, pady=5)
+            new_dir_input = options[option]["new_dir"]
+            new_dir_entry = CTkEntry(master=header_frame, corner_radius=5, width=200)
+            new_dir_entry.insert(0, string=new_dir_input)
+            # new_dir_entry.grid(row=row, column=2, sticky="e", padx=0, pady=5)
+            new_dir_entry.pack(side=RIGHT, padx=5, pady=5)
+            new_dir_label.pack(side=RIGHT)
+
             row += 1
             for item in options[option]["file_extensions"]:
                 if col >= 6:
