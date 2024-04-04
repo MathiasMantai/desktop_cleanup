@@ -1,6 +1,8 @@
 from src.app import App
-from os import path, getenv, getlogin
-from sys import platform
+from os import (
+    path, 
+    getlogin
+)
 import pathlib
 
 
