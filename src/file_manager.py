@@ -1,6 +1,15 @@
-from os.path import isdir, isfile, join
-from os import mkdir, listdir
+from os.path import (
+    isdir, 
+    isfile, 
+    join
+)
+from os import (
+    mkdir, 
+    listdir, 
+    getlogin
+)
 from shutil import move
+from pathlib import Path
 
 class FileManager:
     def create_dir(self, path):
@@ -37,3 +46,13 @@ class FileManager:
         list all files in a specified dir
         """
         return listdir(path)
+    
+    def get_drive_letter(self):
+        """
+        get the current drive letter
+        e.g. "C:"
+        """
+        return Path.home().drive
+    
+    def get_current_active_user(self):
+        return getlogin()

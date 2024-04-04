@@ -1,3 +1,4 @@
+import platform
 from json import load, dump, dumps
 from os import (
     listdir,
@@ -6,6 +7,7 @@ from os import (
 from shutil import move
 from src.log_manager import LogManager
 from src.file_manager import FileManager
+
 
 class Controller:
     """
@@ -43,6 +45,17 @@ class Controller:
         config_file_exists = self.file_manager.file_exists(self.config_file_path)
         if not config_file_exists:
             self.file_manager.create_file(self.config_file_path, dumps(obj=self.default_config_data(), indent=4))
+
+        self.load_config()
+
+        
+        #try auto setting fields on first startup
+        if self.get_config('first_startup') == 1:
+            self.auto_set_new_dir()
+            self.auto_set_target_list()
+            self.update_config('first_startup', 0)
+
+        
 
     def list_files(self, dir_path: str):
         return [file for file in listdir(dir_path) if path.isfile(path.join(path.abspath(dir_path), file))]
@@ -147,3 +160,38 @@ class Controller:
             },
             "target_list": []
         }
+    
+    def auto_set_new_dir(self):
+        """
+        on first startup try to automatically detect 
+        """
+        drive = self.file_manager.get_drive_letter()
+        cur_user = self.file_manager.get_current_active_user()
+        plat = platform.system()
+        user_path = ""
+        if plat == "Windows":
+            user_path = path.join(drive, '\\', 'Users', cur_user)
+        print(user_path)
+        type_config = self.get_config("type_config")
+        for key, _ in type_config.items():
+            id = "type_config." + key + ".new_dir"
+            new_dir = path.join(user_path, key.capitalize())
+            self.update_config(id, new_dir)
+
+    def auto_set_target_list(self):
+        """
+        on first startup try to auto set target dir list for cleanup
+        """
+        drive = self.file_manager.get_drive_letter()
+        cur_user = self.file_manager.get_current_active_user()
+        plat = platform.system()
+        user_path = ""
+        if plat == "Windows":
+            user_path = path.join(drive, '\\', 'Users', cur_user)
+        print(user_path)
+        target_list = [
+            user_path,
+            path.join(user_path, 'Desktop')
+        ]
+        id = "target_list"
+        self.update_config(id, target_list)

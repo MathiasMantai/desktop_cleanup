@@ -21,7 +21,7 @@ class App:
 
         # config_path = 'data/config.json'
         self.controller = Controller(data_dir, config_file_path, config_file_name, log_file_path)
-        self.controller.load_config()
+
         print(self.controller.config)
         set_default_color_theme('green')
         self.window.resizable(False, False)
