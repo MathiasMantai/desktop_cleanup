@@ -36,11 +36,11 @@ class ConfigFrame(CTkFrame):
         options = self.controller.get_config("type_config")
         for option in options:
             col = 0
-            header_frame = CTkFrame(master=self, bg_color="transparent")
+            header_frame = CTkFrame(master=self, bg_color="transparent", corner_radius=0)
             header_frame.grid(row=row, columnspan=6, sticky='we')
             label = CTkLabel(master=header_frame, text=option.capitalize(), padx=padx, pady=pady, corner_radius=0, anchor="n", font=('Helvetica', 18, 'bold'))
             # label.grid(row=row, column=col, padx=padx, pady=pady)
-            label.pack(side=LEFT, padx=10)
+            label.pack(side=LEFT, padx=10, pady=5)
             new_dir_label = CTkLabel(master=header_frame, text="New Directory:")
             # new_dir_label.grid(row=row, column=1, padx=0, pady=5)
             new_dir_input = options[option]["new_dir"]
