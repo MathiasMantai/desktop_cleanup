@@ -51,12 +51,6 @@ class App:
         execute.pack()
         main.update()
         config.update()
-        width = main.winfo_reqwidth() + config.winfo_reqwidth()
-        height = (main.winfo_reqheight() + e_frame.winfo_reqheight() if config.winfo_reqheight() < main.winfo_reqheight() else config.winfo_reqheight() + e_frame.winfo.reqheight())
-        #padding
-        height += 20
-        print(f"{width}x{height}")
-        self.window.geometry(f'{width}x{height}')
 
     def execute(self):
         self.controller.execute_file_movements()
