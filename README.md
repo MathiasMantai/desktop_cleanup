@@ -18,3 +18,6 @@ pip install -r requirements.txt
 ```
 pyinstaller main.spec
 ```
+
+## Download
+Alternatively, the app can be downloaded on my <a href="https://mathiasmantai.de/projects" target="_blank">website</a>
