@@ -1,5 +1,6 @@
 # Desktop Cleanup
 
+Move files to their specified directories with a single button press.
 
 ![Screenshot](screenshots/screenshot_01.png)
 
