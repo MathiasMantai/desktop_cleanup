@@ -18,6 +18,7 @@ class App:
     def __init__(self, title, data_dir: str, config_file_path: str, config_file_name: str, log_file_path: str, icon='icon.png', width = 800, height = 600):
         self.window = CTk()
         self.window.title(title)
+        self.window.geometry(f"{width}x{height}")
 
         # config_path = 'data/config.json'
         self.controller = Controller(data_dir, config_file_path, config_file_name, log_file_path)
