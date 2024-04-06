@@ -110,7 +110,7 @@ class Controller:
             for option in type_config:
                 if 1 in type_config[option]["file_extensions"].values():
                     new_dir = type_config[option]["new_dir"]
-                    file_extensions = list(type_config[option]["file_extensions"].keys())
+                    file_extensions = [key for key,value in type_config[option]["file_extensions"].items() if value == 1 ]
                     files = self.list_files(path)
                     for file in files:
                         file_parts = file.split(".")
