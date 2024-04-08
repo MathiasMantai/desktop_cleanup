@@ -27,7 +27,7 @@ class Controller:
 
         #check data dir
         data_dir_exists = self.file_manager.dir_exists(data_dir)
-        print(data_dir_exists)
+
         if not data_dir_exists:
             self.file_manager.create_dir(data_dir)
 
@@ -36,8 +36,6 @@ class Controller:
         self.log_manager = LogManager(self.file_manager, log_file_path, error_log_name)
         self.log_manager.init()
 
-        #check for data dir
-        print("config dir: " + config_file_path)
         if not self.file_manager.dir_exists(config_file_path):
             self.file_manager.create_dir(config_file_path)
             
@@ -66,7 +64,6 @@ class Controller:
             new_file_path = path.join(new_dir, file_name)
             move(file_path, new_file_path)
         except PermissionError as e:
-            print(str(e))
             self.log_manager.log_error(str(e))
 
     def load_config(self):
@@ -171,7 +168,6 @@ class Controller:
         user_path = ""
         if plat == "Windows":
             user_path = path.join(drive, '\\', 'Users', cur_user)
-        print(user_path)
         type_config = self.get_config("type_config")
         for key, _ in type_config.items():
             id = "type_config." + key + ".new_dir"
@@ -188,7 +184,6 @@ class Controller:
         user_path = ""
         if plat == "Windows":
             user_path = path.join(drive, '\\', 'Users', cur_user)
-        print(user_path)
         target_list = [
             user_path,
             path.join(user_path, 'Desktop')

@@ -23,7 +23,6 @@ class App:
         # config_path = 'data/config.json'
         self.controller = Controller(data_dir, config_file_path, config_file_name, log_file_path)
 
-        print(self.controller.config)
         set_default_color_theme('green')
         self.window.resizable(False, False)
 
@@ -57,7 +56,6 @@ class App:
         self.controller.execute_file_movements()
 
     def toggle_frame(self, id):
-        print("Togggle for frame: " + id)
         self.frames[id].tkraise()
 
     def run(self):
